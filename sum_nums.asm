@@ -18,7 +18,8 @@ section .data
 	result_msg_len equ $-result_msg
 
 section .bss	; 0 filled memory space
-	num1 resb 1
+	num1 resb 2
+	num2 resb 2 
 
 section	.text	; linker
 	global _start
@@ -51,12 +52,19 @@ _start:
 
 	mov	eax, SYS_READ
 	mov	ebx, 2
-	mov	ecx, num1
+	mov	ecx, num2
 	mov	edx, 1
 	int	0x80
 	
 	mov	ecx, result_msg
 	mov	edx, result_msg_len
+	call	write_msg
+
+	mov	eax, num1
+	add	eax, num2
+	mov	ecx, eax
+	mov	edx, 1
+	call write_msg
 
 	mov	eax, SYS_EXIT
 	mov	ebx, 0 ; success exit code
