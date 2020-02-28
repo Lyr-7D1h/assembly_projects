@@ -9,7 +9,7 @@ _start:
 	mov	eax, 3
 	mov	ebx, 1
 	mov	ecx, num1
-	mov	edx, 1
+	mov	edx, 2
 	int	0x80
 	
 	mov	eax, 4
@@ -21,7 +21,7 @@ _start:
 	mov	eax, 3
 	mov	ebx, 1
 	mov	ecx, num1
-	mov	edx, 1
+	mov	edx, 2
 	int	0x80
 	
 	mov	eax, 4

@@ -20,11 +20,12 @@ section .data
 section .bss	; 0 filled memory space
 	num1 resb 2
 	num2 resb 2 
+	sum	resb 3
 
 section	.text	; linker
 	global _start
 
-write_msg:
+write_msg:		; Can be replaced with macros
 	mov	eax, SYS_WRITE
 	mov	ebx, STDOUT
 	int	0x80
@@ -32,7 +33,7 @@ write_msg:
 		
 
 _start:
-	mov	ecx, welcome_message
+	mov	ecx, welcome_message	
 	mov	edx, welcome_message_len
 	call	write_msg
 	
@@ -43,7 +44,7 @@ _start:
 	mov	eax, SYS_READ
 	mov	ebx, 2
 	mov	ecx, num1
-	mov	edx, 1
+	mov	edx, 2
 	int 	0x80
 
 	mov	ecx, ask_second_num_msg
@@ -53,17 +54,27 @@ _start:
 	mov	eax, SYS_READ
 	mov	ebx, 2
 	mov	ecx, num2
-	mov	edx, 1
+	mov	edx, 2
 	int	0x80
 	
 	mov	ecx, result_msg
 	mov	edx, result_msg_len
 	call	write_msg
 
-	mov	eax, num1
-	add	eax, num2
-	mov	ecx, eax
-	mov	edx, 1
+	mov	al, [num1]
+	sub al, '0' 
+	mov bl, [num2]
+	sub bl, '0'
+	add	al, bl
+	add al, '0'
+	mov [sum], al
+
+	mov	ecx, sum
+	mov	edx, 3
+	call write_msg
+
+	mov ecx, 0x0A
+	mov edx, 2
 	call write_msg
 
 	mov	eax, SYS_EXIT
